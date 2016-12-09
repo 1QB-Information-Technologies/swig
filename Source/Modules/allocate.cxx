@@ -882,6 +882,27 @@ Allocate():
       Setattr(inclass, "allocate:public_constructor", "1");
     }
 
+//    /* See if this is a move constructor */
+//    if (parms && (ParmList_numrequired(parms) == 1)) {
+//      /* Look for a few cases. X(const X &), X(X &), X(X *) */
+//      int move_constructor = 0;
+//      String *mc = NewStringf("z.%s", Getattr(inclass, "name"));
+//      if (Strcmp(mc, Getattr(parms, "type")) == 0) {
+//        move_constructor = 1;
+//      }
+//      Delete(mc);
+//
+//      if (move_constructor) {
+//        Setattr(n, "move_constructor", "1");
+//        Setattr(inclass, "allocate:has_move_constructor", "1");
+//        if (cplus_mode == PUBLIC) {
+//          Setattr(inclass, "allocate:move_constructor", "1");
+//        } else if (cplus_mode == PROTECTED) {
+//          Setattr(inclass, "allocate:move_base_constructor", "1");
+//        }
+//      }
+//    }
+//
 
     /* See if this is a copy constructor */
     if (parms && (ParmList_numrequired(parms) == 1)) {
