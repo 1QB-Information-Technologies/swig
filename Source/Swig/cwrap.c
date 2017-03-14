@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------------------------
- * This file is part of SWIG, which is licensed as a whole under version 3 
+ * This file is part of SWIG, which is licensed as a whole under version 3
  * (or any later version) of the GNU General Public License. Some additional
  * terms also apply to certain portions of SWIG. The full details of the SWIG
  * license and copyrights can be found in the LICENSE and COPYRIGHT files
@@ -317,7 +317,7 @@ int Swig_cargs(Wrapper *w, ParmList *p) {
  * Swig_cresult()
  *
  * This function generates the C code needed to set the result of a C
- * function call.  
+ * function call.
  * ----------------------------------------------------------------------------- */
 
 String *Swig_cresult(SwigType *t, const_String_or_char_ptr name, const_String_or_char_ptr decl) {
@@ -400,7 +400,7 @@ String *Swig_cfunction_call(const_String_or_char_ptr name, ParmList *parms) {
 
   /*
      SWIGTEMPLATEDISAMBIGUATOR is compiler dependent (swiglabels.swg),
-     - SUN Studio 9 requires 'template', 
+     - SUN Studio 9 requires 'template',
      - gcc-3.4 forbids the use of 'template'.
      the rest seems not caring very much,
    */
@@ -447,7 +447,7 @@ String *Swig_cfunction_call(const_String_or_char_ptr name, ParmList *parms) {
  * Swig_cmethod_call()
  *
  * Generates a string that calls a C++ method from a list of parameters.
- * 
+ *
  *    arg0->name(arg1, arg2, arg3, ..., argn)
  *
  * self is an argument that defines how to handle the first argument. Normally,
@@ -503,7 +503,7 @@ static String *Swig_cmethod_call(const_String_or_char_ptr name, ParmList *parms,
 
     /*
        SWIGTEMPLATEDESIMBUAGATOR is compiler dependent (swiglabels.swg),
-       - SUN Studio 9 requires 'template', 
+       - SUN Studio 9 requires 'template',
        - gcc-3.4 forbids the use of 'template' (correctly implementing the ISO C++ standard)
        the others don't seem to care,
      */
@@ -611,6 +611,52 @@ String *Swig_cppconstructor_base_call(const_String_or_char_ptr name, ParmList *p
   return func;
 }
 
+String *Swig_cppconstructor_call_movein(const_String_or_char_ptr name, ParmList *parms) {
+  int skip_self = 0;
+  String *func;
+  String *nname;
+  int i = 0;
+  int comma = 0;
+  Parm *p = parms;
+  SwigType *pt;
+  if (skip_self) {
+    if (p)
+      p = nextSibling(p);
+    i++;
+  }
+  nname = SwigType_namestr(name);
+  func = NewStringEmpty();
+  Printf(func, "new %s(std::move(", nname);
+  while (p) {
+    pt = Getattr(p, "type");
+    if ((SwigType_type(pt) != T_VOID)) {
+      String *rcaststr = 0;
+      String *pname = 0;
+      if (comma)
+  Append(func, ",");
+      if (!Getattr(p, "arg:byname")) {
+  pname = Swig_cparm_name(p, i);
+  i++;
+      } else {
+        pname = Getattr(p, "value");
+  if (pname)
+    pname = Copy(pname);
+  else
+    pname = Copy(Getattr(p, "name"));
+      }
+      rcaststr = SwigType_rcaststr(pt, pname);
+      Append(func, rcaststr);
+      Delete(rcaststr);
+      comma = 1;
+      Delete(pname);
+    }
+    p = nextSibling(p);
+  }
+  Append(func, "))");
+  Delete(nname);
+  return func;
+}
+
 String *Swig_cppconstructor_call(const_String_or_char_ptr name, ParmList *parms) {
   return Swig_cppconstructor_base_call(name, parms, 0);
 }
@@ -638,7 +684,7 @@ String *Swig_cppconstructor_director_call(const_String_or_char_ptr name, ParmLis
  *
  * If you undefine the SWIG_FAST_REC_SEARCH no attribute will be set
  * while searching. This could be slower for large projects with very
- * large hierarchy trees... or maybe not. But it will be cleaner. 
+ * large hierarchy trees... or maybe not. But it will be cleaner.
  *
  * Maybe later a swig option can be added to switch at runtime.
  *
@@ -932,7 +978,7 @@ int Swig_MethodToFunction(Node *n, const_String_or_char_ptr nspace, String *clas
   String *directorScope = NewString(nspace);
 
   Replace(directorScope, NSPACE_SEPARATOR, "_", DOH_REPLACE_ANY);
-  
+
   /* If smart pointer without const overload or mutable method, change self dereferencing */
   if (flags & CWRAP_SMART_POINTER) {
     if (flags & CWRAP_SMART_POINTER_OVERLOAD) {
@@ -1178,7 +1224,7 @@ Node *Swig_directormap(Node *module, String *type) {
 /* -----------------------------------------------------------------------------
  * Swig_ConstructorToFunction()
  *
- * This function creates a C wrapper for a C constructor function. 
+ * This function creates a C wrapper for a C constructor function.
  * ----------------------------------------------------------------------------- */
 
 int Swig_ConstructorToFunction(Node *n, const_String_or_char_ptr nspace, String *classname, String *none_comparison, String *director_ctor, int cplus, int flags, String *directorname) {
@@ -1285,7 +1331,16 @@ int Swig_ConstructorToFunction(Node *n, const_String_or_char_ptr nspace, String 
 	Delete(tmp_none_comparison);
 	Delete(action);
       } else {
-	String *call = Swig_cppconstructor_call(classname, parms);
+
+
+	String *call = 0;
+  String *mif = Getattr(n, "feature:movein");
+  if (mif && !Strcmp(mif, NewString("1"))) {
+    call = Swig_cppconstructor_call_movein(classname, parms);
+  } else {
+    call = Swig_cppconstructor_call(classname, parms);
+  }
+
 	String *cres = Swig_cresult(type, Swig_cresult_name(), call);
 	Setattr(n, "wrap:action", cres);
 	Delete(cres);
