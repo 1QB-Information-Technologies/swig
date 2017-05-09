@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl The macros which aren't shipped with the autotools are stored in the
 dnl Tools/config directory in .m4 files.
 
-AC_INIT([swig],[3.0.11],[http://www.swig.org])
+AC_INIT([swig],[3.0.11qdk],[http://www.swig.org])
 
 dnl NB: When this requirement is increased to 2.60 or later, AC_PROG_SED
 dnl     definition below can be removed
@@ -143,12 +143,12 @@ dnl Info for building shared libraries ... in order to run the examples
 AC_MSG_CHECKING(SO)
 if test -z "$SO"
 then
-	case $host in
-	*-*-hp*) SO=.sl;;
-	*-*-darwin*) SO=.bundle;;
-	*-*-cygwin* | *-*-mingw*) SO=.dll;;
-	*) SO=.so;;
-	esac
+        case $host in
+        *-*-hp*) SO=.sl;;
+        *-*-darwin*) SO=.bundle;;
+        *-*-cygwin* | *-*-mingw*) SO=.dll;;
+        *) SO=.so;;
+        esac
 fi
 AC_MSG_RESULT($SO)
 
@@ -159,9 +159,9 @@ AC_MSG_RESULT($SO)
 AC_MSG_CHECKING(LDSHARED)
 if test -z "$LDSHARED"
 then
-	case $host in
-	*-*-aix*) LDSHARED="\$(srcdir)/ld_so_aix \$(CC)";;
-	*-*-cygwin* | *-*-mingw*)
+        case $host in
+        *-*-aix*) LDSHARED="\$(srcdir)/ld_so_aix \$(CC)";;
+        *-*-cygwin* | *-*-mingw*)
             if test "$GCC" = yes; then
                 LDSHARED="$CC -shared"
             else
@@ -173,36 +173,36 @@ then
                     LDSHARED="$CC -shared"
                 fi
             fi ;;
-	*-*-irix5*) LDSHARED="ld -shared";;
-	*-*-irix6*) LDSHARED="ld ${SGI_ABI} -shared -all";;
-	*-*-sunos4*) LDSHARED="ld";;
-	*-*-solaris*) LDSHARED="ld -G";;
-	*-*-hp*) LDSHARED="ld -b";;
-	*-*-osf*) LDSHARED="ld -shared -expect_unresolved \"*\"";;
-	*-sequent-sysv4) LDSHARED="ld -G";;
-	*-*-next*)
-		if test "$ns_dyld"
-		then LDSHARED='$(CC) $(LDFLAGS) -bundle -prebind'
-		else LDSHARED='$(CC) $(CFLAGS) -nostdlib -r'
-		fi
+        *-*-irix5*) LDSHARED="ld -shared";;
+        *-*-irix6*) LDSHARED="ld ${SGI_ABI} -shared -all";;
+        *-*-sunos4*) LDSHARED="ld";;
+        *-*-solaris*) LDSHARED="ld -G";;
+        *-*-hp*) LDSHARED="ld -b";;
+        *-*-osf*) LDSHARED="ld -shared -expect_unresolved \"*\"";;
+        *-sequent-sysv4) LDSHARED="ld -G";;
+        *-*-next*)
+                if test "$ns_dyld"
+                then LDSHARED='$(CC) $(LDFLAGS) -bundle -prebind'
+                else LDSHARED='$(CC) $(CFLAGS) -nostdlib -r'
+                fi
                 if test "$with_next_framework" ; then
-		    LDSHARED="$LDSHARED \$(LDLIBRARY)"
-		fi ;;
-	*-*-linux*) LDSHARED="gcc -shared";;
-	*-*-dgux*) LDSHARED="ld -G";;
-	*-*-freebsd3*) LDSHARED="gcc -shared";;
-	*-*-freebsd* | *-*-openbsd*) LDSHARED="ld -Bshareable";;
-	*-*-netbsd*)
-		if [[ "`$CC -dM -E - </dev/null | grep __ELF__`" != "" ]]
-		then
-			LDSHARED="cc -shared"
-		else
-			LDSHARED="ld -Bshareable"
-		fi;;
-	*-sco-sysv*) LDSHARED="cc -G -KPIC -Ki486 -belf -Wl,-Bexport";;
-	*-*-darwin*) LDSHARED="cc -bundle -undefined suppress -flat_namespace";;
-	*)	LDSHARED="ld";;
-	esac
+                    LDSHARED="$LDSHARED \$(LDLIBRARY)"
+                fi ;;
+        *-*-linux*) LDSHARED="gcc -shared";;
+        *-*-dgux*) LDSHARED="ld -G";;
+        *-*-freebsd3*) LDSHARED="gcc -shared";;
+        *-*-freebsd* | *-*-openbsd*) LDSHARED="ld -Bshareable";;
+        *-*-netbsd*)
+                if [[ "`$CC -dM -E - </dev/null | grep __ELF__`" != "" ]]
+                then
+                        LDSHARED="cc -shared"
+                else
+                        LDSHARED="ld -Bshareable"
+                fi;;
+        *-sco-sysv*) LDSHARED="cc -G -KPIC -Ki486 -belf -Wl,-Bexport";;
+        *-*-darwin*) LDSHARED="cc -bundle -undefined suppress -flat_namespace";;
+        *)	LDSHARED="ld";;
+        esac
 fi
 AC_MSG_RESULT($LDSHARED)
 # CXXSHARED is the ld *command* used to create C++ shared library
@@ -212,7 +212,7 @@ AC_MSG_RESULT($LDSHARED)
 AC_MSG_CHECKING(CXXSHARED)
 if test -z "$CXXSHARED"
 then
-	CXXSHARED="$LDSHARED"
+        CXXSHARED="$LDSHARED"
 fi
 AC_MSG_RESULT($CXXSHARED)
 
@@ -220,8 +220,8 @@ AC_MSG_RESULT($CXXSHARED)
 AC_MSG_CHECKING(TRYLINKINGWITHCXX)
 if test -z "$TRYLINKINGWITHCXX"
 then
-	case $host in
-	*-*-solaris*) if test "$GCC" = yes
+        case $host in
+        *-*-solaris*) if test "$GCC" = yes
              then TRYLINKINGWITHCXX="CXXSHARED= $CXX -Wl,-G"
              else TRYLINKINGWITHCXX="CXXSHARED= $CXX -G -L/opt/SUNWspro/lib -lCrun -lCstd"
              fi;;
@@ -247,22 +247,22 @@ AC_MSG_RESULT($TRYLINKINGWITHCXX)
 AC_MSG_CHECKING(CCSHARED)
 if test -z "$CCSHARED"
 then
-	case $host in
-	*-*-hp*) if test "$GCC" = yes
-		 then CCSHARED="-fpic"
-		 else CCSHARED="+z"
-		 fi;;
-	s390x*-*-*) CCSHARED="-fpic" ;;
-	s390*-*-*) CCSHARED="-fPIC" ;;
-	*-*-linux*) CCSHARED="-fpic";;
-	*-*-freebsd* | *-*-openbsd*) CCSHARED="-fpic";;
-	*-*-netbsd*) CCSHARED="-fPIC";;
-	*-sco-sysv*) CCSHARED="-KPIC -dy -Bdynamic";;
-	*-*-irix6*)  case $CC in
-		   *gcc*) CCSHARED="-shared";;
-		   *) CCSHARED="";;
-		   esac;;
-	esac
+        case $host in
+        *-*-hp*) if test "$GCC" = yes
+                 then CCSHARED="-fpic"
+                 else CCSHARED="+z"
+                 fi;;
+        s390x*-*-*) CCSHARED="-fpic" ;;
+        s390*-*-*) CCSHARED="-fPIC" ;;
+        *-*-linux*) CCSHARED="-fpic";;
+        *-*-freebsd* | *-*-openbsd*) CCSHARED="-fpic";;
+        *-*-netbsd*) CCSHARED="-fPIC";;
+        *-sco-sysv*) CCSHARED="-KPIC -dy -Bdynamic";;
+        *-*-irix6*)  case $CC in
+                   *gcc*) CCSHARED="-shared";;
+                   *) CCSHARED="";;
+                   esac;;
+        esac
 fi
 AC_MSG_RESULT($CCSHARED)
 
@@ -270,12 +270,12 @@ AC_MSG_RESULT($CCSHARED)
 AC_MSG_CHECKING(RPATH)
 if test -z "$RPATH"
 then
-	case $host in
-	*-*-solaris*) RPATH='-R. -R$(exec_prefix)/lib';;
+        case $host in
+        *-*-solaris*) RPATH='-R. -R$(exec_prefix)/lib';;
         *-*-irix*) RPATH='-rpath .:$(exec_prefix)/lib';;
-	*-*-linux*) RPATH='-Xlinker -rpath $(exec_prefix)/lib -Xlinker -rpath .';;
-	*)	RPATH='';;
-	esac
+        *-*-linux*) RPATH='-Xlinker -rpath $(exec_prefix)/lib -Xlinker -rpath .';;
+        *)	RPATH='';;
+        esac
 fi
 AC_MSG_RESULT($RPATH)
 
@@ -285,15 +285,15 @@ AC_MSG_RESULT($RPATH)
 AC_MSG_CHECKING(LINKFORSHARED)
 if test -z "$LINKFORSHARED"
 then
-	case $host in
-	*-*-aix*)	LINKFORSHARED='-Wl,-bE:$(srcdir)/python.exp -lld';;
-	*-*-hp*)
-	    LINKFORSHARED="-Wl,-E -Wl,+s -Wl,+b\$(BINLIBDEST)/lib-dynload";;
-	*-*-linux*) LINKFORSHARED="-Xlinker -export-dynamic";;
-	*-*-next*) LINKFORSHARED="-u libsys_s";;
-	*-sco-sysv*) LINKFORSHARED="-Bdynamic -dy -Wl,-Bexport";;
-	*-*-irix6*) LINKFORSHARED="-all";;
-	esac
+        case $host in
+        *-*-aix*)	LINKFORSHARED='-Wl,-bE:$(srcdir)/python.exp -lld';;
+        *-*-hp*)
+            LINKFORSHARED="-Wl,-E -Wl,+s -Wl,+b\$(BINLIBDEST)/lib-dynload";;
+        *-*-linux*) LINKFORSHARED="-Xlinker -export-dynamic";;
+        *-*-next*) LINKFORSHARED="-u libsys_s";;
+        *-sco-sysv*) LINKFORSHARED="-Bdynamic -dy -Wl,-Bexport";;
+        *-*-irix6*) LINKFORSHARED="-all";;
+        esac
 fi
 AC_MSG_RESULT($LINKFORSHARED)
 
@@ -462,11 +462,11 @@ AC_ARG_WITH(tclconfig, AS_HELP_STRING([--without-tcl], [Disable Tcl])
 AS_HELP_STRING([--with-tclconfig=path], [Set location of tclConfig.sh]), [with_tclconfig="$withval"], [with_tclconfig=])
 AC_ARG_WITH(tcl,
  [  --with-tcl=path         Set location of Tcl package],[
-	TCLPACKAGE="$withval"], [TCLPACKAGE="$alllang_default"])
+        TCLPACKAGE="$withval"], [TCLPACKAGE="$alllang_default"])
 AC_ARG_WITH(tclincl,[  --with-tclincl=path     Set location of Tcl include directory],[
-	TCLINCLUDE="$ISYSTEM$withval"], [TCLINCLUDE=])
+        TCLINCLUDE="$ISYSTEM$withval"], [TCLINCLUDE=])
 AC_ARG_WITH(tcllib,[  --with-tcllib=path      Set location of Tcl library directory],[
-	TCLLIB="-L$withval"], [TCLLIB=])
+        TCLLIB="-L$withval"], [TCLLIB=])
 
 # First, check for "--without-tcl" or "--with-tcl=no".
 if test x"${TCLPACKAGE}" = xno; then
@@ -484,13 +484,13 @@ fi
 # check in a few common install locations
 if test x"${TCLCONFIG}" = x ; then
     for i in `ls -d -r /usr/lib*/ 2>/dev/null` \
-	     `ls -d -r /usr/lib*/tcl*/ 2>/dev/null` \
-	     `ls -d -r /usr/local/lib*/ 2>/dev/null` \
-	     `ls -d -r /usr/local/lib*/tcl*/ 2>/dev/null` ; do
-	if test -f $i"tclConfig.sh" ; then
-	    TCLCONFIG=`(cd $i; pwd)`
-	    break
-	fi
+             `ls -d -r /usr/lib*/tcl*/ 2>/dev/null` \
+             `ls -d -r /usr/local/lib*/ 2>/dev/null` \
+             `ls -d -r /usr/local/lib*/tcl*/ 2>/dev/null` ; do
+        if test -f $i"tclConfig.sh" ; then
+            TCLCONFIG=`(cd $i; pwd)`
+            break
+        fi
     done
 fi
 if test x"${TCLCONFIG}" = x ; then
@@ -508,13 +508,13 @@ fi
 
 if test -z "$TCLINCLUDE"; then
    if test "x$TCLPACKAGE" != xyes; then
-	TCLINCLUDE="$ISYSTEM$TCLPACKAGE/include"
+        TCLINCLUDE="$ISYSTEM$TCLPACKAGE/include"
    fi
 fi
 
 if test -z "$TCLLIB"; then
    if test "x$TCLPACKAGE" != xyes; then
-	TCLLIB="-L$TCLPACKAGE/lib -ltcl"
+        TCLLIB="-L$TCLPACKAGE/lib -ltcl"
    fi
 fi
 
@@ -522,17 +522,17 @@ AC_MSG_CHECKING(for Tcl header files)
 if test -z "$TCLINCLUDE"; then
 AC_TRY_CPP([#include <tcl.h>], , TCLINCLUDE="")
 if test -z "$TCLINCLUDE"; then
-	dirs="/usr/local/include /usr/include /opt/local/include"
-	for i in $dirs ; do
-		if test -r $i/tcl.h; then
-			AC_MSG_RESULT($i)
-			TCLINCLUDE="$ISYSTEM$i"
-			break
-		fi
-	done
+        dirs="/usr/local/include /usr/include /opt/local/include"
+        for i in $dirs ; do
+                if test -r $i/tcl.h; then
+                        AC_MSG_RESULT($i)
+                        TCLINCLUDE="$ISYSTEM$i"
+                        break
+                fi
+        done
 fi
 if test -z "$TCLINCLUDE"; then
-    	AC_MSG_RESULT(not found)
+        AC_MSG_RESULT(not found)
 fi
 else
         AC_MSG_RESULT($TCLINCLUDE)
@@ -542,14 +542,14 @@ AC_MSG_CHECKING(for Tcl library)
 if test -z "$TCLLIB"; then
 dirs="/usr/local/lib /usr/lib /opt/local/lib"
 for i in $dirs ; do
-	if test -r $i/libtcl.a; then
-	    AC_MSG_RESULT($i)
-	    TCLLIB="-L$i -ltcl"
-	    break
-	fi
+        if test -r $i/libtcl.a; then
+            AC_MSG_RESULT($i)
+            TCLLIB="-L$i -ltcl"
+            break
+        fi
 done
 if test -z "$TCLLIB"; then
-	AC_MSG_RESULT(not found)
+        AC_MSG_RESULT(not found)
 fi
 else
 AC_MSG_RESULT($TCLLIB)
@@ -914,36 +914,36 @@ fi
 # perl -MExtUtils::Embed -e ccopts
 AC_MSG_CHECKING(for Perl5 header files)
 if test -n "$PERL"; then
-	PERL5DIR=`($PERL -MConfig -le 'print $Config{archlibexp}') 2>/dev/null`
-	if test -n "$PERL5DIR" ; then
-		dirs="$PERL5DIR $PERL5DIR/CORE"
-		PERL5EXT=none
-		for i in $dirs; do
-			if test -r $i/perl.h; then
-				AC_MSG_RESULT($i)
-				PERL5EXT="$i"
-				break
-			fi
-		done
-		if test "$PERL5EXT" = none; then
-			PERL5EXT="$PERL5DIR/CORE"
-			AC_MSG_RESULT(could not locate perl.h...using $PERL5EXT)
-		fi
+        PERL5DIR=`($PERL -MConfig -le 'print $Config{archlibexp}') 2>/dev/null`
+        if test -n "$PERL5DIR" ; then
+                dirs="$PERL5DIR $PERL5DIR/CORE"
+                PERL5EXT=none
+                for i in $dirs; do
+                        if test -r $i/perl.h; then
+                                AC_MSG_RESULT($i)
+                                PERL5EXT="$i"
+                                break
+                        fi
+                done
+                if test "$PERL5EXT" = none; then
+                        PERL5EXT="$PERL5DIR/CORE"
+                        AC_MSG_RESULT(could not locate perl.h...using $PERL5EXT)
+                fi
 
-		AC_MSG_CHECKING(for Perl5 library)
-		PERL5LIB=`($PERL -e 'use Config; $_=$Config{libperl}; s/^lib//; s/$Config{_a}$//; s/\.$Config{so}.*//; print $_, "\n"') 2>/dev/null`
-		if test -z "$PERL5LIB" ; then
-			AC_MSG_RESULT(not found)
-		else
-			AC_MSG_RESULT($PERL5LIB)
-		fi
+                AC_MSG_CHECKING(for Perl5 library)
+                PERL5LIB=`($PERL -e 'use Config; $_=$Config{libperl}; s/^lib//; s/$Config{_a}$//; s/\.$Config{so}.*//; print $_, "\n"') 2>/dev/null`
+                if test -z "$PERL5LIB" ; then
+                        AC_MSG_RESULT(not found)
+                else
+                        AC_MSG_RESULT($PERL5LIB)
+                fi
     AC_MSG_CHECKING(for Perl5 ccflags)
- 		PERL5CCFLAGS=`($PERL -e 'use Config; print $Config{ccflags}, "\n"' | sed "s/-Wdeclaration-after-statement//" | sed "s/-I/$ISYSTEM/") 2>/dev/null`
- 		if test -z "$PERL5CCFLAGS" ; then
- 			AC_MSG_RESULT(not found)
- 		else
- 			AC_MSG_RESULT($PERL5CCFLAGS)
- 		fi
+                PERL5CCFLAGS=`($PERL -e 'use Config; print $Config{ccflags}, "\n"' | sed "s/-Wdeclaration-after-statement//" | sed "s/-I/$ISYSTEM/") 2>/dev/null`
+                if test -z "$PERL5CCFLAGS" ; then
+                        AC_MSG_RESULT(not found)
+                else
+                        AC_MSG_RESULT($PERL5CCFLAGS)
+                fi
     AC_MSG_CHECKING(for Perl5 ccdlflags)
     PERL5CCDLFLAGS=`($PERL -e 'use Config; print $Config{ccdlflags}, "\n"') 2>/dev/null`
     if test -z "$PERL5CCDLFLAGS" ; then
@@ -972,12 +972,12 @@ if test -n "$PERL"; then
       else
       AC_MSG_RESULT(found)
     fi
-	else
-		AC_MSG_RESULT(unable to determine perl5 configuration)
-		PERL5EXT=$PERL5DIR
-	fi
+        else
+                AC_MSG_RESULT(unable to determine perl5 configuration)
+                PERL5EXT=$PERL5DIR
+        fi
 else
-       	AC_MSG_RESULT(could not figure out how to run perl5)
+        AC_MSG_RESULT(could not figure out how to run perl5)
 fi
 
 # Cygwin (Windows) needs the library for dynamic linking
@@ -1290,9 +1290,9 @@ if test -z "$JAVAINCDIR" ; then
 
     for d in $JAVAINCDIR ; do
       if test -r "$d/jni.h" ; then
-	JAVAINCDIR=$d
-	JAVAINC=-I\"$d\"
-	break
+        JAVAINCDIR=$d
+        JAVAINC=-I\"$d\"
+        break
       fi
     done
   fi
@@ -1666,11 +1666,11 @@ GUILE_LIBS=
 AC_ARG_WITH(guile-config, AS_HELP_STRING([--without-guile], [Disable Guile])
 AS_HELP_STRING([--with-guile-config=path], [Set location of guile-config]),[ GUILE_CONFIG="$withval"], [GUILE_CONFIG=])
 AC_ARG_WITH(guile,[  --with-guile=path       Set location of Guile executable],[
-	GUILE="$withval"], [GUILE="$alllang_default"])
+        GUILE="$withval"], [GUILE="$alllang_default"])
 AC_ARG_WITH(guile-cflags,[  --with-guile-cflags=cflags   Set cflags required to compile against Guile],[
-	GUILE_CFLAGS="$withval"])
+        GUILE_CFLAGS="$withval"])
 AC_ARG_WITH(guile-libs,[  --with-guile-libs=ldflags    Set ldflags needed to link with Guile],[
-	GUILE_LIBS="$withval"])
+        GUILE_LIBS="$withval"])
 
 # First, check for "--without-guile" or "--with-guile=no".
 if test x"${GUILE}" = xno; then
@@ -1686,7 +1686,7 @@ else
       AC_MSG_RESULT([$guile_bindir])
       GUILE=$guile_bindir/guile
       if ! test -f "$GUILE" ; then
-	GUILE=
+        GUILE=
         AC_PATH_PROG(GUILE, guile)
       fi
     fi
@@ -1782,9 +1782,9 @@ else
 # First figure out what the name of Ruby is
 
 if test "x$RUBYBIN" = xyes; then
-	AC_CHECK_PROGS(RUBY, ruby)
+        AC_CHECK_PROGS(RUBY, ruby)
 else
-	RUBY="$RUBYBIN"
+        RUBY="$RUBYBIN"
 fi
 
 AC_MSG_CHECKING(for Ruby header files)
@@ -1792,38 +1792,38 @@ if test -n "$RUBY"; then
         # Try Ruby1.9+ first
         RUBYDIR=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["rubyhdrdir"]] || $rubyhdrdir') 2>/dev/null`
         RUBYARCHHDRDIR=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["rubyarchhdrdir"]] || $rubyarchhdrdir') 2>/dev/null`
-	if test x"$RUBYDIR" = x"" || test x"$RUBYDIR" = x"nil"; then
-		RUBYDIR=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["archdir"]] || $archdir') 2>/dev/null`
+        if test x"$RUBYDIR" = x"" || test x"$RUBYDIR" = x"nil"; then
+                RUBYDIR=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["archdir"]] || $archdir') 2>/dev/null`
         else
                 RUBYARCH=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["arch"]] || $arch') 2>/dev/null`
         fi
-	if test x"$RUBYDIR" != x""; then
-		dirs="$RUBYDIR"
-		RUBYINCLUDE=
-		for i in $dirs; do
-			if test -r $i/ruby.h; then
-				if test x"$RUBYARCH" = x""; then
-					RUBYINCLUDE="-I$i"
-				elif test -n "$RUBYARCHHDRDIR"; then
-					RUBYINCLUDE="-I$i -I$RUBYARCHHDRDIR"
-				else
-					RUBYINCLUDE="-I$i -I$i/$RUBYARCH"
-				fi
-				AC_MSG_RESULT($RUBYINCLUDE)
-				break
-			fi
-		done
-		if test x"$RUBYINCLUDE" = x""; then
-			AC_MSG_RESULT(could not locate ruby.h)
-		fi
+        if test x"$RUBYDIR" != x""; then
+                dirs="$RUBYDIR"
+                RUBYINCLUDE=
+                for i in $dirs; do
+                        if test -r $i/ruby.h; then
+                                if test x"$RUBYARCH" = x""; then
+                                        RUBYINCLUDE="-I$i"
+                                elif test -n "$RUBYARCHHDRDIR"; then
+                                        RUBYINCLUDE="-I$i -I$RUBYARCHHDRDIR"
+                                else
+                                        RUBYINCLUDE="-I$i -I$i/$RUBYARCH"
+                                fi
+                                AC_MSG_RESULT($RUBYINCLUDE)
+                                break
+                        fi
+                done
+                if test x"$RUBYINCLUDE" = x""; then
+                        AC_MSG_RESULT(could not locate ruby.h)
+                fi
 
-		# Find library and path for linking.
-		AC_MSG_CHECKING(for Ruby library)
-		RUBYLIB=""
-		rb_archlibdir=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["archlibdir"]]') 2>/dev/null`
-		rb_libdir=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["libdir"]]') 2>/dev/null`
-		rb_bindir=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["bindir"]]') 2>/dev/null`
-		dirs="$dirs $rb_archlibdir $rb_libdir $rb_bindir"
+                # Find library and path for linking.
+                AC_MSG_CHECKING(for Ruby library)
+                RUBYLIB=""
+                rb_archlibdir=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["archlibdir"]]') 2>/dev/null`
+                rb_libdir=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["libdir"]]') 2>/dev/null`
+                rb_bindir=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["bindir"]]') 2>/dev/null`
+                dirs="$dirs $rb_archlibdir $rb_libdir $rb_bindir"
 
         rb_libruby=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["LIBRUBY_A"]]') 2>/dev/null`
         RUBYLINK=`($RUBY -rrbconfig -e '
@@ -1853,33 +1853,33 @@ if test -n "$RUBY"; then
               puts link
             end') 2>/dev/null`
 
-		if test "$rb_libruby" != ""; then
-			for i in $dirs; do
-				if (test -r $i/$rb_libruby;) then
-					RUBYLIB="$i"
-					break
-				fi
-			done
-		fi
-		if test "$RUBYLIB" = ""; then
-			RUBYLIB="$RUBYDIR"
-			AC_MSG_RESULT(not found... using $RUBYDIR)
-		else
-			AC_MSG_RESULT($RUBYLINK in $RUBYLIB)
-		fi
-	else
-		AC_MSG_RESULT(unable to determine ruby configuration)
-	fi
+                if test "$rb_libruby" != ""; then
+                        for i in $dirs; do
+                                if (test -r $i/$rb_libruby;) then
+                                        RUBYLIB="$i"
+                                        break
+                                fi
+                        done
+                fi
+                if test "$RUBYLIB" = ""; then
+                        RUBYLIB="$RUBYDIR"
+                        AC_MSG_RESULT(not found... using $RUBYDIR)
+                else
+                        AC_MSG_RESULT($RUBYLINK in $RUBYLIB)
+                fi
+        else
+                AC_MSG_RESULT(unable to determine ruby configuration)
+        fi
 
-	case $host in
-		*-*-mingw*) ;; # do nothing, the default windows libraries are already included
-		*) RUBYLINK="$RUBYLINK `($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["LIBS"]]') 2>/dev/null`";;
-	esac
+        case $host in
+                *-*-mingw*) ;; # do nothing, the default windows libraries are already included
+                *) RUBYLINK="$RUBYLINK `($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["LIBS"]]') 2>/dev/null`";;
+        esac
 
-	RUBYCCDLFLAGS=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["CCDLFLAGS"]]') 2>/dev/null`
-	RUBYSO=.`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["DLEXT"]]') 2>/dev/null`
+        RUBYCCDLFLAGS=`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["CCDLFLAGS"]]') 2>/dev/null`
+        RUBYSO=.`($RUBY -rrbconfig -e 'print RbConfig::CONFIG[["DLEXT"]]') 2>/dev/null`
 else
-	AC_MSG_RESULT(could not figure out how to run ruby)
+        AC_MSG_RESULT(could not figure out how to run ruby)
 fi
 
 case $host in
@@ -1920,24 +1920,24 @@ else
     dnl /usr/bin/php5 -> /usr/bin/php-config5
     case $PHP in
       *5)
-	PHPCONFIG=`echo "$PHP"|sed 's/5$/-config5/'` ;;
+        PHPCONFIG=`echo "$PHP"|sed 's/5$/-config5/'` ;;
       *)
-	PHPCONFIG=$PHP-config ;;
+        PHPCONFIG=$PHP-config ;;
     esac
     php_version=`$PHPCONFIG --version 2>/dev/null`
     case $php_version in
     5*)
-	PHPINC=`$PHPCONFIG --includes 2>/dev/null`
-	if test -n "$PHPINC"; then
-	  AC_MSG_RESULT($PHPINC)
-	else
-	  AC_MSG_RESULT(not found)
-	fi
-	;;
+        PHPINC=`$PHPCONFIG --includes 2>/dev/null`
+        if test -n "$PHPINC"; then
+          AC_MSG_RESULT($PHPINC)
+        else
+          AC_MSG_RESULT(not found)
+        fi
+        ;;
     "")
         AC_MSG_RESULT([could not find $PHPCONFIG or obtain PHP version from it]) ;;
     *)
-	AC_MSG_RESULT([found PHP $php_version, but only PHP 5 is supported]) ;;
+        AC_MSG_RESULT([found PHP $php_version, but only PHP 5 is supported]) ;;
     esac
 fi
 AC_SUBST(PHP)
@@ -1961,27 +1961,27 @@ if test x"${with_ocaml}" = xno; then
 else
     AC_MSG_CHECKING(for Ocaml DL load generator)
     if test -z "$OCAMLDLGEN"; then
-	AC_CHECK_PROGS(OCAMLDLGEN, ocamldlgen)
+        AC_CHECK_PROGS(OCAMLDLGEN, ocamldlgen)
     fi
 
     AC_MSG_CHECKING(for Ocaml package tool)
-	if test -z "$OCAMLFIND"; then
-	AC_CHECK_PROGS(OCAMLFIND, ocamlfind)
+        if test -z "$OCAMLFIND"; then
+        AC_CHECK_PROGS(OCAMLFIND, ocamlfind)
     fi
 
     AC_MSG_CHECKING(for Ocaml compiler)
-	if test -z "$OCAMLC"; then
-	AC_CHECK_PROGS(OCAMLC, ocamlc)
+        if test -z "$OCAMLC"; then
+        AC_CHECK_PROGS(OCAMLC, ocamlc)
     fi
 
     AC_MSG_CHECKING(for Ocaml toplevel creator)
     if test -z "$OCAMLMKTOP"; then
-	AC_CHECK_PROGS(OCAMLMKTOP, ocamlmktop)
+        AC_CHECK_PROGS(OCAMLMKTOP, ocamlmktop)
     fi
 
     AC_MSG_CHECKING(for Ocaml Pre-Processor-Pretty-Printer)
     if test -z "$CAMLP4"; then
-	AC_CHECK_PROGS(CAMLP4, camlp4)
+        AC_CHECK_PROGS(CAMLP4, camlp4)
     fi
 fi # Disabling ocaml
 
@@ -2008,27 +2008,27 @@ if test x"${PIKEBIN}" = xno; then
 else
 
 if test "x$PIKEBIN" = xyes; then
-	AC_CHECK_PROGS(PIKE, pike pike7.8 pike7.6 pike7.4 pike7.2)
+        AC_CHECK_PROGS(PIKE, pike pike7.8 pike7.6 pike7.4 pike7.2)
 else
-	PIKE="$PIKEBIN"
+        PIKE="$PIKEBIN"
 fi
 
 
 # Check for pike-config
 # Priority: configure option, guessed from $PIKE, search from list
 AC_ARG_WITH(pike-config, AS_HELP_STRING([--with-pike-config=path],
-  	[Set location of pike-config script]),
+        [Set location of pike-config script]),
   [PIKECONFIG="$withval"], [PIKECONFIG=""])
 
 if test -z "$PIKECONFIG" -a -n "$PIKE"; then
-	AC_CHECK_PROGS(PIKECONFIG, $PIKE-config pike-config \
-		pike7.6-config pike7.4-config pike7.2-config)
+        AC_CHECK_PROGS(PIKECONFIG, $PIKE-config pike-config \
+                pike7.6-config pike7.4-config pike7.2-config)
 fi
 
 # Check for a --with-pikeincl option to configure
 # Priority: configure option, info from $PIKECONFIG, guessed by pike script
 AC_ARG_WITH(pikeincl, AS_HELP_STRING([--with-pikeincl=path],
-	[Set location of Pike include directory]),
+        [Set location of Pike include directory]),
   [PIKEINCLUDE="-I$withval"], [PIKEINCLUDE=])
 
 if test -n "$PIKE"; then
@@ -2107,11 +2107,11 @@ fi
 if test -n "$CHICKEN_CSC" ; then
 
   AC_ARG_WITH(chickenopts,[  --with-chickenopts=args Set compiler options for static CHICKEN generated code],[
-	CHICKENOPTS="$withval"], [CHICKENOPTS=])
+        CHICKENOPTS="$withval"], [CHICKENOPTS=])
   AC_ARG_WITH(chickensharedlib,[  --with-chickensharedlib=args    Set linker options for shared CHICKEN generated code],[
-	CHICKENSHAREDLIB="$withval"], [CHICKENSHAREDLIB=])
+        CHICKENSHAREDLIB="$withval"], [CHICKENSHAREDLIB=])
   AC_ARG_WITH(chickenlib,[  --with-chickenlib=args  Set linker options for static CHICKEN generated code],[
-	CHICKENLIB="$withval"], [CHICKENLIB=])
+        CHICKENLIB="$withval"], [CHICKENLIB=])
 
   AC_MSG_CHECKING(for compiler options for static CHICKEN generated code)
   if test -z "$CHICKENOPTS"; then
@@ -2132,7 +2132,7 @@ if test -n "$CHICKEN_CSC" ; then
         CHICKENSHAREDLIB="`$CHICKEN_CSC -shared -libs` $CHICKENSHAREDLIB"
   fi
   if test -z "$CHICKENSHAREDLIB"; then
-  	AC_MSG_RESULT(not found)
+        AC_MSG_RESULT(not found)
   else
         AC_MSG_RESULT($CHICKENSHAREDLIB)
   fi
@@ -2144,7 +2144,7 @@ if test -n "$CHICKEN_CSC" ; then
         CHICKENLIB="`$CHICKEN_CSC -libs` $CHICKENLIB"
   fi
   if test -z "$CHICKENLIB"; then
-  	AC_MSG_RESULT(not found)
+        AC_MSG_RESULT(not found)
   else
         AC_MSG_RESULT($CHICKENLIB)
   fi
@@ -2288,9 +2288,9 @@ LUALINK=
 AC_ARG_WITH(lua, AS_HELP_STRING([--without-lua], [Disable Lua])
 AS_HELP_STRING([--with-lua=path], [Set location of Lua executable]),[ LUABIN="$withval"], [LUABIN="$alllang_default"])
 AC_ARG_WITH(luaincl,[  --with-luaincl=path     Set location of Lua include directory],[
-	LUAINCLUDE="$withval"], [LUAINCLUDE=])
+        LUAINCLUDE="$withval"], [LUAINCLUDE=])
 AC_ARG_WITH(lualib,[  --with-lualib=path      Set location of Lua library directory],[
-	LUALIB="$withval"], [LUALIB=])
+        LUALIB="$withval"], [LUALIB=])
 
 # First, check for "--without-lua" or "--with-lua=no".
 if test x"${LUABIN}" = xno; then
@@ -2530,10 +2530,10 @@ else
       case "$(go env GOARCH)" in
       amd64 | arm64 | ppc64*)
         GOOPT="-intgosize 64"
-	;;
+        ;;
       *)
         GOOPT="-intgosize 32"
-	;;
+        ;;
       esac
       ;;
     esac
